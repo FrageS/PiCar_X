@@ -15,6 +15,7 @@ from picarx import set_dir_servo_angle
 from picarx import stop
 import sys, termios, tty, os
 
+# https://github.com/recantha/EduKit3-RC-Keyboard/blob/master/rc_keyboard.py
 def getch():
     fd = sys.stdin.fileno()
     old_settings = termios.tcgetattr(fd)
