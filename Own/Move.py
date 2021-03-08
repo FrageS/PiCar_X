@@ -79,5 +79,6 @@ if __name__ == "__main__":
     try:
       move()
     except:
+      dir_servo_angle_calibration(0)
       stop()
       print('Program cancelled')
