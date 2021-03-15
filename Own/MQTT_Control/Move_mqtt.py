@@ -37,10 +37,10 @@ def sender():
 
         # Lateral control
         if keyboard.is_pressed('a') and speed != 0:
-            steer -= 2
+            steer -= 4
             time.sleep(0.15)
         if keyboard.is_pressed('d') and speed != 0:
-            steer += 2
+            steer += 4
             time.sleep(0.15)
         
         if (steer > 35):

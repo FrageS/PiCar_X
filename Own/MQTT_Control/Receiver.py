@@ -1,20 +1,5 @@
-#!/usr/bin/python3
-import sys
-sys.path.append(r'/opt/ezblock')
-from ezblock import __reset_mcu__
-import time
-__reset_mcu__()
-time.sleep(0.01)
 import paho.mqtt.client as mqtt #import the client1
 import time
-
-from picarx import dir_servo_angle_calibration
-from picarx import forward
-from ezblock import delay
-from picarx import backward
-from picarx import set_dir_servo_angle
-from picarx import stop
-import sys, termios, tty, os
 
 MQTT_SERVER = "10.0.0.8"
 speed = 0
@@ -46,15 +31,14 @@ def client():
     client.on_message=on_message    
     client.connect(MQTT_SERVER)    
     client.loop_start() #start the loop
-    
     while not client.connected_flag:
         time.sleep(0.1)
 
-    while True:
-        
-        forward(speed)
-        set_dir_servo_angle((steer))
-        #print("Speed: ", speed, " / ", "Steering: ", steer)      
+    i = 0
+    while True:  
+        i += 1      
+        time.sleep(1)        
+        print("Speed: ", speed, " / ", "Steering: ", steer)      
     
     client.loop_stop() #stop the loop
 
@@ -62,7 +46,5 @@ def client():
 if __name__ == "__main__":
     try:
         client()
-    except:  
-        forward(0)  
-        set_dir_servo_angle((0)) 
+    except:     
         print('Program cancelled')
