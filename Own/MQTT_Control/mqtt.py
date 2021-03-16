@@ -8,6 +8,7 @@ def on_connect(client, userdata, flags, rc):
         print("connected OK Returned code=",rc)
         client.subscribe("picar/speed")
         client.subscribe("picar/steer")
+        client.subscribe("picar/stop")
         print("Subscribed to topics")
     else:
         print("Bad connection Returned code= ",rc)
