@@ -1,4 +1,4 @@
-import paho.mqtt.client as mqtt
+import mqtt
 import time
 import keyboard
 
@@ -6,19 +6,13 @@ MQTT_SERVER = "10.0.0.8"
 MQTT_CLIENT = "Publisher"
 port=1883
 
-def on_publish(client,userdata,result):           
-    print("data published")
-    pass
-
 def sender():
     speed = 0
     old_speed = 0
     steer = 0
     old_steer = 0
-    client = mqtt.Client("Publisher")
-    client.on_publish = on_publish 
-    client.connect(MQTT_SERVER,port)
-    
+    client = mqtt.create_client(MQTT_SERVER, MQTT_CLIENT, port) 
+        
     while True: 
         old_speed = speed
         old_steer = steer
@@ -37,7 +31,7 @@ def sender():
             speed = old_speed
         
         if(old_speed != speed):
-            ret= client.publish("picar/speed",speed)
+            client.publish("picar/speed",speed)
 
         # Lateral control
         if keyboard.is_pressed('a') and speed != 0:
@@ -53,19 +47,14 @@ def sender():
             steer = -35
 
         if(old_steer != steer):
-            ret = client.publish("picar/steer",steer)
+            client.publish("picar/steer",steer)
 
-        if keyboard.is_pressed('q'):
-            speed = 0
-            steer = 0
-            ret = client.publish("picar/speed", speed)
-            ret = client.publish("picar/steer", steer)
+        if keyboard.is_pressed('q'):                       
+            client.publish("picar/stop", "stop")
             time.sleep(0.15)
+            print('Program exited normally')
             exit()
-        
-       
-
-
+  
 if __name__ == "__main__":
     try:
         sender()
