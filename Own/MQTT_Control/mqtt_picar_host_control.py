@@ -3,6 +3,7 @@ import time
 import keyboard
 
 MQTT_SERVER = "10.0.0.8"
+MQTT_CLIENT = "Publisher"
 port=1883
 
 def on_publish(client,userdata,result):           
@@ -25,10 +26,13 @@ def sender():
         # Longitudinal control
         if keyboard.is_pressed('w'):
             speed += 1                     
-            time.sleep(0.2) 
+            time.sleep(0.15) 
         elif keyboard.is_pressed('s'):
             speed -= 1                     
-            time.sleep(0.2) 
+            time.sleep(0.15) 
+        elif keyboard.is_pressed('space'):
+            speed = 0
+            time.sleep(0.15)
         else:
             speed = old_speed
         
@@ -50,6 +54,15 @@ def sender():
 
         if(old_steer != steer):
             ret = client.publish("picar/steer",steer)
+
+        if keyboard.is_pressed('q'):
+            speed = 0
+            steer = 0
+            ret = client.publish("picar/speed", speed)
+            ret = client.publish("picar/steer", steer)
+            time.sleep(0.15)
+            exit()
+        
        
 
 
